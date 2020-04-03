@@ -1,4 +1,4 @@
-import React , {useReducer} from 'react';
+import React , {useReducer, useCallback} from 'react';
 
 const initialState = {
     count : 0
@@ -21,14 +21,27 @@ const reducer = (currentState,action) => {
 
 };
 
-export default function UseReducer({max,step}){
+export default function UseReducer({max,step}) {
     const [newState, dispatch] = useReducer(reducer, initialState);
-    const { count } = newState;
-    return (
+    const {count} = newState;
+    console.log(dispatch);
+
+    const increment = useCallback(
+        () => dispatch({type: 'increment', payload: {maxValue: max, stepValue: step}}
+        ), [dispatch]
+    );
+
+    const decrement = useCallback(
+        () =>  dispatch({type : 'decrement',payload : '1'}
+        ), [dispatch]
+    );
+
+
+return (
         <div>
             <h1>{count}</h1>
-            <button onClick={() => dispatch({type : 'increment',payload : {maxValue : max, stepValue : step}})}>Increment</button>
-            <button onClick={() => dispatch({type : 'decrement',payload : '1'})}>Decrement</button>
+            <button onClick={increment}>Increment</button>
+            <button onClick={decrement}>Decrement</button>
             <button onClick={() => dispatch({type : 'reset',payload : '0'})}>Reset</button>
         </div>
     )
