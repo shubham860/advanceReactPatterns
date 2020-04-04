@@ -9,7 +9,6 @@ const reducer = (currentState,action) => {
     const {count} = currentState;
     switch(type){
         case 'increment' :      const {maxValue, stepValue} = payload;
-                                if(count >= maxValue) return {...currentState, count };
                                 return  {...currentState, count : count + stepValue};
 
         case 'decrement' :       return  {...currentState, count : count - payload};
