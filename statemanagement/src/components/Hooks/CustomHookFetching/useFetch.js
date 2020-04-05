@@ -8,10 +8,9 @@ const initialState = {
 
 const reducer = (currentState,action) => {
     const {type, payload} = action;
-    const [ response ] = payload;
     switch(type){
-        case 'success' : return {...currentState, loading : false, data : response };
-        case 'error' : return {...currentState,loading: false, error : response};
+        case 'success' : return {...currentState, loading : false, data : payload };
+        case 'error' : return {...currentState,loading: false, error : payload};
         default : return currentState;
     }
 };
@@ -32,5 +31,6 @@ export default function useFetch(url){
         };
         fetchUrl();
     },[]);
-    return  [newState.data, newState.error,newState.loading];
+
+    return [newState.data, newState.error,newState.loading];
 }
