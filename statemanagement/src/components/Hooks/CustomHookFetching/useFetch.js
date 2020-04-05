@@ -9,6 +9,7 @@ const initialState = {
 const reducer = (currentState,action) => {
     const {type, payload} = action;
     switch(type){
+        case 'loading' : return  {...currentState, loading : true };
         case 'success' : return {...currentState, loading : false, data : payload };
         case 'error' : return {...currentState,loading: false, error : payload};
         default : return currentState;
@@ -17,8 +18,8 @@ const reducer = (currentState,action) => {
 
 export default function useFetch(url){
     const [newState,dispatch] = useReducer(reducer,initialState);
-
     useEffect(() => {
+        dispatch({type : "loading"});
         const  fetchUrl = async () => {
             try{
                 const data = await fetch(url);
@@ -32,5 +33,6 @@ export default function useFetch(url){
         fetchUrl();
     },[]);
 
-    return [newState.data, newState.error,newState.loading];
+
+    return [newState.loading,newState.data, newState.error];
 }
