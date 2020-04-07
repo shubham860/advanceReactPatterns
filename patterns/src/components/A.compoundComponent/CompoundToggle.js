@@ -1,6 +1,6 @@
 import React, {Component, Children, cloneElement} from 'react';
 
-class Toggle extends Component {
+class CompoundToggle extends Component {
     static On = ({on, children}) => (on ? children : null);
 
     static Off = ({on, children}) => (on ? null : children);
@@ -26,4 +26,4 @@ class Toggle extends Component {
         )}
 }
 
-export default Toggle;
+export default CompoundToggle;
