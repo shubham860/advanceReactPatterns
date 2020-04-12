@@ -43,7 +43,7 @@ class FlexibleCompound extends Component {
     render() {
         console.log(ToggleContext);
         return <ToggleContext.Provider value={this.state}>
-                  {
+                  {this.props.children}
               </ToggleContext.Provider>
     }
 }

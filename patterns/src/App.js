@@ -1,6 +1,6 @@
 import React from 'react';
 import './App.css';
-import Usage from './components/E.propsGetter/Usage';
+import Usage from './components/G.stateReducer/Usage';
 
 function App() {
   return (
