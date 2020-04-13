@@ -1,7 +1,5 @@
-import React from 'react';
-import StateInitializer from "./StateIntializer";
+import React from "react";
 import StateReducer from "./StateReducer";
-
 
 class Usage extends React.Component {
     static defaultProps = {
@@ -13,19 +11,19 @@ class Usage extends React.Component {
     handleToggle = (...args) => {
         this.setState(({timesClicked}) => ({
             timesClicked: timesClicked + 1,
-        }))
+        }));
         this.props.onToggle(...args)
-    }
+    };
     handleReset = (...args) => {
-        this.setState(this.initialState)
+        this.setState(this.initialState);
         this.props.onReset(...args)
-    }
+    };
     toggleStateReducer = (state, changes) => {
         if (this.state.timesClicked >= 4) {
             return {...changes, on: false}
         }
         return changes
-    }
+    };
     render() {
         const {timesClicked} = this.state
         return (
@@ -34,22 +32,13 @@ class Usage extends React.Component {
                 onToggle={this.handleToggle}
                 onReset={this.handleReset}
             >
-
-                {
-                    ({on, toggleProps, reset}) =>
-                        <div>
-                            <h1>{on ? "I'm on" : "I'm off"}</h1>
-                            <button {...toggleProps({onClick: greet})}>{on ? "on" : "off"}</button>
-                            <button onClick={() => reset()}>{on ? "on" : "off"}</button>
-                        </div>
-                }
                 {toggle => (
                     <div>
-                        <Switch
+                        <button
                             {...toggle.getTogglerProps({
                                 on: toggle.on,
                             })}
-                        />
+                        >Clickme</button>
                         {timesClicked > 4 ? (
                             <div data-testid="notice">
                                 Whoa, you clicked too much!
@@ -67,25 +56,6 @@ class Usage extends React.Component {
         )
     }
 }
-export {StateReducer, Usage as default}
+Usage.title = 'State Reducers'
 
-export default function Usage({
-                                  onReset = (...args) => console.log('onReset', ...args)}){
-    const  greet = () => alert("rolla");
-
-    const onToggle = (...args) => console.log('onToggle', ...args);
-
-    const onInitial = false;
-    return(
-        <StateInitializer onToggle={onToggle} onInitial={onInitial} onReset={onReset}>
-            {
-                ({on, toggleProps, reset}) =>
-                    <div>
-                        <h1>{on ? "I'm on" : "I'm off"}</h1>
-                        <button {...toggleProps({onClick: greet})}>{on ? "on" : "off"}</button>
-                        <button onClick={() => reset()}>{on ? "on" : "off"}</button>
-                    </div>
-            }
-        </StateInitializer>
-    )
-}
+export default Usage;

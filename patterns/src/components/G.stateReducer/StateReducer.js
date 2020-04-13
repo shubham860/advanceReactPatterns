@@ -1,63 +1,56 @@
-import React, {Component} from 'react';
+// state reducer
+
+import React from 'react'
 
 const callAll = (...fns) => (...args) =>
     fns.forEach(fn => fn && fn(...args));
 
-
-class StateReducer extends Component {
+export default class StateReducer extends React.Component {
     static defaultProps = {
         initialOn: false,
         onReset: () => {},
         stateReducer: (state, changes) => changes,
     };
-
     initialState = {on: this.props.initialOn};
-
     state = this.initialState;
-
     internalSetState(changes, callback) {
         this.setState(state => {
-            const changesObject = typeof changes === 'function' ? changes(state) : changes;
-            const reducedChanges = this.props.stateReducer(state, changesObject) || {};
+            // handle function setState call
+            const changesObject =
+                typeof changes === 'function' ? changes(state) : changes;
+            // apply state reducer
+            const reducedChanges =
+                this.props.stateReducer(state, changesObject) || {};
+            // return null if there are no changes to be made
+            // (to avoid an unecessary rerender)
             return Object.keys(reducedChanges).length
                 ? reducedChanges
                 : null
         }, callback)
     }
-
-
-    toggle = () => {
-        this.internalSetState(prevState => ({on: !prevState.on}),
-            () => this.props.onToggle(this.state.on)
-        )
-    };
-
-    reset = () =>
-        this.internalSetState(this.initialState, () =>
-            this.props.onReset(this.state.on),
+        reset = () =>
+            this.internalSetState(this.initialState, () =>
+        this.props.onReset(this.state.on),
+    );
+    toggle = () =>
+        this.internalSetState(
+            ({on}) => ({on: !on}),
+            () => this.props.onToggle(this.state.on),
         );
-
-
-    propsToggler = ({onClick,...props}) => ({
-        onClick : callAll(onClick,this.toggle),
-        ...props
+    getTogglerProps = ({onClick, ...props} = {}) => ({
+        onClick: callAll(onClick, this.toggle),
+        'aria-pressed': this.state.on,
+        ...props,
     });
-
-
-    propsCollection() {
+    getStateAndHelpers() {
         return {
             on: this.state.on,
             toggle: this.toggle,
-            toggleProps : this.propsToggler,
-            reset : this.reset
-
+            reset: this.reset,
+            getTogglerProps: this.getTogglerProps,
         }
     }
-
-
     render() {
-        return this.props.children(this.propsCollection())
+        return this.props.children(this.getStateAndHelpers())
     }
 }
-
-export default StateReducer;

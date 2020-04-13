@@ -8,14 +8,13 @@ class StateInitializer extends Component {
     static defaultProps = {
         initialOn: false,
         onReset: () => {},
-        stateReducer: (state, changes) => changes,
     };
 
     initialState = {on: this.props.initialOn};
 
     state = this.initialState;
 
-    
+
 
     toggle = () => {
         this.setState(prevState => ({on: !prevState.on}),
